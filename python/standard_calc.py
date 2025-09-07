@@ -14,11 +14,11 @@ def bound_to_180(angle):
         float: The bounded angle in degrees.
     """
 
-    if angle >= 360 or angle < -360:
+    if angle >= 360 or angle < -360: # Normalize to [-360, 360)
         angle = angle % 360
-    if angle >= 180:
+    if angle >= 180: # Normalize to [-180, 180)
         angle -= 360
-    if angle < -180:
+    if angle < -180: # Normalize to [-180, 180)
         angle += 360
 
     return angle
@@ -44,19 +44,20 @@ def is_angle_between(first_angle, middle_angle, second_angle):
         bool: True when `middle_angle` is not in the reflex angle of `first_angle` and `second_angle`, false otherwise.
     """
 
-    first_angle = normalize_360(first_angle)
+    # Normalize all angles to [0, 360)
+    first_angle = normalize_360(first_angle) 
     middle_angle = normalize_360(middle_angle)
     second_angle = normalize_360(second_angle)
 
-    if first_angle > second_angle:
+    if first_angle > second_angle: 
         if first_angle - second_angle > 180 and middle_angle > first_angle or middle_angle < second_angle:
-            return True
+            return True # Reflex case when first angle greater than second
         elif first_angle - second_angle <= 180 and middle_angle > second_angle and middle_angle < first_angle:
-            return True
+            return True # Non-reflex case when first angle greater than second
     if first_angle < second_angle:
         if second_angle - first_angle > 180 and middle_angle > second_angle or middle_angle < first_angle:
-            return True
+            return True # Reflex case when first angle less than second
         elif second_angle - first_angle <= 180 and middle_angle > first_angle and middle_angle < second_angle:
-            return True
+            return True # Non-reflex case when first angle less than second
 
-    return False
+    return False # Equal case and all other cases
